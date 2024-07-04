@@ -1,4 +1,4 @@
-package com.example.tacocloud;
+package com.example.tacocloud.dto;
 
 import lombok.Data;
 
@@ -19,6 +19,7 @@ public class TacoOrder {
     private List<Taco> tacos = new ArrayList<>();
 
     public void addTaco (Taco taco) {
+
         this.tacos.add(taco);
     }
 }

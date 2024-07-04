@@ -1,14 +1,17 @@
-package com.example.tacocloud;
+package com.example.tacocloud.controller;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.example.tacocloud.dto.TacoOrder;
+import com.example.tacocloud.dto.Ingredient;
+import com.example.tacocloud.dto.Taco;
+import com.example.tacocloud.dto.Type;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
+;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -16,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/design")
 @SessionAttributes("tacoOrder")
 public class DesignTacoController {
+
     @ModelAttribute
     public void addIngredientsToModel(Model model) {
         List<Ingredient> ingredients = Arrays.asList(
@@ -40,20 +44,30 @@ public class DesignTacoController {
     public TacoOrder order() {
         return new TacoOrder();
     }
+
     @ModelAttribute(name = "taco")
     public Taco taco() {
         return new Taco();
     }
+
     @GetMapping
     public String showDesignForm() {
         return "design";
     }
-    private Iterable<Ingredient> filterByType(
-            List<Ingredient> ingredients, Type type) {
+
+    private Iterable<Ingredient> filterByType(List<Ingredient> ingredients, Type type) {
         return ingredients
                 .stream()
                 .filter(x -> x.getType().equals(type))
                 .collect(Collectors.toList());
+    }
+
+    @PostMapping
+    public String processTaco(Taco taco,
+                              @ModelAttribute TacoOrder tacoOrder) {
+        tacoOrder.addTaco(taco);
+        log.info("Processing taco: {}", taco);
+        return "redirect:/orders/current";
     }
 }
 
