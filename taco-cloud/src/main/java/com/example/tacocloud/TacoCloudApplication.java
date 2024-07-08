@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TacoCloudApplication {
 
 	public static void main(String[] args) {
-
+		System.setProperty("org.apache.tomcat.jni.disable", "true");
 		SpringApplication.run(TacoCloudApplication.class, args);
 	}
 
